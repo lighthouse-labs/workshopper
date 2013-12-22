@@ -187,7 +187,7 @@ Workshopper.prototype.runSolution = function (setup, dir, current, run) {
     bold(yellow((run ? 'Running' : 'Verifying') + ' "' + current + '"...')) + '\n'
   )
 
-  var a   = submissionCmd(setup)
+  var a   = submissionCmd(dir, setup)
     , b   = solutionCmd(dir, setup)
     , v   = verify(a, b, {
           a      : setup.a
@@ -229,7 +229,9 @@ function solutionCmd (dir, setup) {
   return exec.concat(args)
 }
 
-function submissionCmd (setup) {
+function submissionCmd (dir, setup) {
+  var filename = argv._[1]
+  if (!filename) filename = dir + '/verify.js'
   var args = setup.args || setup.submissionArgs || []
     , exec
 
@@ -240,14 +242,14 @@ function submissionCmd (setup) {
       , require.resolve('./module-use-tracker')
       , setup.modUseTrack.trackFile
       , setup.modUseTrack.modules.join(',')
-      , argv._[1]
+      , filename
     ]
   } else if (setup.execWrap) {
     exec = [ require.resolve('./exec-wrapper') ]
     exec = exec.concat(setup.execWrap)
-    exec = exec.concat(argv._[1])
+    exec = exec.concat(filename)
   } else {
-    exec = [ argv._[1] ]
+    exec = [ filename ]
   }
 
   return exec.concat(args)
