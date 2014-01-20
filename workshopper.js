@@ -380,6 +380,7 @@ function onselect (name) {
     file = txt
 
   printText(this.name, this.appDir, file, path.extname(file), function () {
+    console.log(repeat('-', this.width) + '\n')
     console.log(
       bold('\n » To print these instructions again, run: `' + this.name + ' print`.\n'))
     // console.log(
