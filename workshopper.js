@@ -381,11 +381,11 @@ function onselect (name) {
 
   printText(this.name, this.appDir, file, path.extname(file), function () {
     console.log(
-      bold('\n » To print these instructions again, run: `' + this.name + ' print`.'))
+      bold('\n » To print these instructions again, run: `' + this.name + ' print`.\n'))
+    // console.log(
+    //   bold(' » To execute your program in a test environment, run:\n   `' + this.name + ' run program.js`.'))
     console.log(
-      bold(' » To execute your program in a test environment, run:\n   `' + this.name + ' run program.js`.'))
-    console.log(
-      bold(' » To verify your program, run: `' + this.name + ' verify program.js`.'))
+      bold(' » To verify your work for this problem, run: `' + this.name + ' verify`.\n'))
     if (this.helpFile) {
       console.log(
         bold(' » For help with this problem or with ' + this.name + ', run:\n   `' + this.name + ' help`.'))
