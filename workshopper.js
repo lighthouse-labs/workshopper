@@ -356,6 +356,7 @@ function onfail (setup, dir, current) {
     console.log('\nYour solution to ' + current + ' didn\'t pass. Try again!')
   else
     console.log('\nYour solution to ' + current + ' didn\'t match the expected output.\nTry again!')
+    console.log(repeat('-', this.width) + '\n')
 }
 
 function onselect (name) {
