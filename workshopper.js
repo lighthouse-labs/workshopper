@@ -278,12 +278,12 @@ Workshopper.prototype._printUsage = function () {
 
 function onpass (setup, dir, current) {
   console.log(bold(green('# PASS')))
-  console.log('\nYour solution to ' + current + ' passed!')
+  console.log(green(bold('\nYour solution to ' + current + ' passed!')))
 
   if (setup.hideSolutions)
     return
 
-  console.log('\nHere\'s what the official solution is if you want to compare notes:\n')
+  // console.log('\nHere\'s what the official solution is if you want to compare notes:\n')
 
   var solutions = fs.readdirSync(dir).filter(function (file) {
         return (/^solution.*\.js/).test(file)
@@ -309,14 +309,14 @@ function onpass (setup, dir, current) {
         if (err)
           throw err
 
-        solutions.forEach(function (file, i) {
-          console.log(repeat('-', this.width) + '\n')
-          if (solutions.length > 1)
-            console.log(bold(file.name) + ':\n')
-          console.log(file.content)
-          if (i == solutions.length - 1)
-            console.log(repeat('-', this.width) + '\n')
-        }.bind(this))
+        // solutions.forEach(function (file, i) {
+        //   console.log(repeat('-', this.width) + '\n')
+        //   if (solutions.length > 1)
+        //     console.log(bold(file.name) + ':\n')
+        //   console.log(file.content)
+        //   if (i == solutions.length - 1)
+        //     console.log(repeat('-', this.width) + '\n')
+        // }.bind(this))
         
         this.updateData('completed', function (xs) {
           if (!xs) xs = []
@@ -330,6 +330,7 @@ function onpass (setup, dir, current) {
         if (remaining === 0) {
           console.log('You\'ve finished all the challenges! Hooray!\n')
         } else {
+          console.log(repeat('-', this.width) + '\n')
           console.log(
               'You have '
             + remaining
@@ -338,6 +339,7 @@ function onpass (setup, dir, current) {
             + ' left.'
           )
           console.log('Type `' + this.name + '` to show the menu.\n')
+          console.log(repeat('-', this.width) + '\n')
         }
         
         if (setup.close)
