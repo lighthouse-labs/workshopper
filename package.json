@@ -1,12 +1,13 @@
 {
-  "name": "workshopper",
-  "version": "0.7.0",
+  "name": "workshopper-jlord",
+  "version": "0.0.0",
   "description": "A terminal workshop runner framework",
   "main": "./workshopper.js",
   "author": "Rod Vagg <rod@vagg.org> (https://github.com/rvagg)",
+  "contributors": ["jlord"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/rvagg/workshopper.git"
+    "url": "https://github.com/jlord/workshopper.git#verify"
   },
   "license": "MIT",
   "dependencies": {
