@@ -4,6 +4,8 @@ const argv       = require('optimist').argv
     , mkdirp     = require('mkdirp')
     , map        = require('map-async')
     , msee       = require('msee')
+    , http       = require('http')
+    , ecstatic   = require('ecstatic')
 
 const showMenu  = require('./menu')
     , verify    = require('./verify')
@@ -56,6 +58,9 @@ Workshopper.prototype.init = function () {
   if (argv.h || argv.help || argv._[0] == 'help')
     return this._printHelp()
 
+if (argv.s || argv.sever || argv._[0] == 'server')
+    return this._runServer()
+
   if (argv._[0] == 'credits')
     return this._printCredits()
 
@@ -98,9 +103,10 @@ Workshopper.prototype.verify = function (run) {
     console.error('ERROR: No active problem. Select a challenge from the menu.')
     return process.exit(1)
   }
-  
+
   dir     = this.dirFromName(current)
   setupFn = require(dir + '/setup.js')
+
 
   if (!setupFn.async) {
     setup = setupFn(run)
@@ -262,6 +268,21 @@ Workshopper.prototype._printHelp = function () {
     printText(this.name, this.appDir, this.helpFile)
 }
 
+Workshopper.prototype._runServer = function () {
+  var dirname = __dirname.split('git-it/')
+  var root = dirname[0] + 'git-it/guide'
+  var server = http.createServer(
+    ecstatic({ root: root })
+  ).listen(0)
+
+  server.on('listening', function () {
+    var addr = this.address()
+    console.log('Open this in your browser: %s:%s', 'http://localhost', addr.port + '\n'
+      + 'Open a new terminal window and run `git-it` again.\n'
+      + 'When you are done with server, press CTRL + C to end it.')
+  })
+}
+
 Workshopper.prototype._printCredits = function () {
   if (this.creditsFile)
     printText(this.name, this.appDir, this.creditsFile)
@@ -317,15 +338,15 @@ function onpass (setup, dir, current) {
         //   if (i == solutions.length - 1)
         //     console.log(repeat('-', this.width) + '\n')
         // }.bind(this))
-        
+
         this.updateData('completed', function (xs) {
           if (!xs) xs = []
           var ix = xs.indexOf(current)
           return ix >= 0 ? xs : xs.concat(current)
         })
-        
+
         completed = this.getData('completed') || []
-        
+
         remaining = this.problems().length - completed.length
         if (remaining === 0) {
           console.log('You\'ve finished all the challenges! Hooray!\n')
@@ -341,7 +362,7 @@ function onpass (setup, dir, current) {
           console.log('Type `' + this.name + '` to show the menu.\n')
           console.log(repeat('-', this.width) + '\n')
         }
-        
+
         if (setup.close)
           setup.close()
       }.bind(this)
@@ -350,7 +371,7 @@ function onpass (setup, dir, current) {
 
 function onfail (setup, dir, current) {
   if (setup.close) setup.close()
-  
+
   console.log(bold(red('# FAIL')))
   if (typeof setup.verify == 'function')
     console.log('\nYour solution to ' + current + ' didn\'t pass. Try again!')
@@ -363,7 +384,7 @@ function onselect (name) {
   console.log('\n  ' + repeat('#', 69))
   console.log(center(this.width, '~~  ' + name + '  ~~'))
   console.log('  ' + repeat('#', 69) + '\n')
-  
+
   var dir  = this.dirFromName(name)
     , txt  = path.resolve(dir, 'problem.txt')
     , md   = path.resolve(dir, 'problem.md')
@@ -380,10 +401,15 @@ function onselect (name) {
     file = txt
 
   printText(this.name, this.appDir, file, path.extname(file), function () {
-    console.log(
-      bold('\n » To print these instructions again, run: `' + this.name + ' print`.\n'))
+    var pathtoguide = this.appDir + '/guide/index.html'
+    // console.log(
+    //   bold('\n » To print these instructions again, run: `' + this.name + ' print`.\n'))
     // console.log(
     //   bold(' » To execute your program in a test environment, run:\n   `' + this.name + ' run program.js`.'))
+    console.log(
+      bold(' » To launch the guide, run: `' + this.name + ' server`.\n'))
+    console.log(
+      bold(' » Or copy this address to your browser:\n' + ' » ' + pathtoguide + ' \n'))
     console.log(
       bold(' » To verify your work for this problem, run: `' + this.name + ' verify`.\n'))
     if (this.helpFile) {
@@ -397,7 +423,7 @@ function onselect (name) {
     if (this.prerequisitesFile) {
       console.log(
         bold(' » For any set up/installion prerequisites for ' + this.name + ', run:\n   `' + this.name + ' prerequisites`.'))
-    }        
+    }
     console.log()
   }.bind(this))
 }
