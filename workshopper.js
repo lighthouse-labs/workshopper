@@ -277,9 +277,11 @@ Workshopper.prototype._runServer = function () {
 
   server.on('listening', function () {
     var addr = this.address()
-    console.log('Open this in your browser: %s:%s', 'http://localhost', addr.port + '\n'
-      + 'Open a new terminal window and run `git-it` again.\n'
-      + 'When you are done with server, press CTRL + C to end it.')
+    console.log(bold('\n Server time! ᕕ( ᐛ )ᕗ') + '\n The server is now running from this window.\n\n'
+      + ' It\'s serving the guide at this address, paste it in your broswer: %s:%s', bold('http://localhost'), bold(addr.port) + '\n'
+      + ' Next, open a new terminal window and run `git-it` again and work from there.\n\n'
+      + ' When you are done you can close this window or press CTRL + C to end the server.\n'
+      + ' BEEP BOOP')
   })
 }
 
