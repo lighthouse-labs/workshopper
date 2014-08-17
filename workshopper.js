@@ -277,11 +277,9 @@ Workshopper.prototype._runServer = function () {
 
   server.on('listening', function () {
     var addr = this.address()
-    console.log(bold('\n Server time! ᕕ( ᐛ )ᕗ') + '\n The server is now running from this window.\n\n'
-      + ' It\'s serving the guide at this address, paste it in your broswer: %s:%s', bold('http://localhost'), bold(addr.port) + '\n'
-      + ' Next, open a new terminal window and run `git-it` again and work from there.\n\n'
-      + ' When you are done you can close this window or press CTRL + C to end the server.\n'
-      + ' BEEP BOOP')
+    console.log('Open this in your browser: %s:%s', 'http://localhost', addr.port + '\n'
+      + 'Open a new terminal window and run `git-it` again.\n'
+      + 'When you are done with server, press CTRL + C to end it.')
   })
 }
 
@@ -409,22 +407,24 @@ function onselect (name) {
     // console.log(
     //   bold(' » To execute your program in a test environment, run:\n   `' + this.name + ' run program.js`.'))
     console.log(
-      bold(' » To launch the guide, run: `' + this.name + ' server`.\n'))
+      bold('  » To verify your work for this problem, run: `' + this.name + ' verify`.\n'))
     console.log(
-      bold(' » Or copy this address to your browser:\n' + ' » ' + pathtoguide + ' \n'))
+      bold('  » Run `git-it` again to launch menu & go onto next challenge\n'))
     console.log(
-      bold(' » To verify your work for this problem, run: `' + this.name + ' verify`.\n'))
+      bold('  » To launch the guide, run: `' + this.name + ' server`.\n'))
+    console.log(
+      bold('  » Or copy this address to your browser:\n' + '  » ' + pathtoguide + ' \n'))
     if (this.helpFile) {
       console.log(
-        bold(' » For help with this problem or with ' + this.name + ', run:\n   `' + this.name + ' help`.'))
+        bold('  » For help with this problem or with ' + this.name + ', run:\n   `' + this.name + ' help`.'))
     }
     if (this.creditsFile) {
       console.log(
-        bold(' » For a list of those who contributed to ' + this.name + ', run:\n   `' + this.name + ' credits`.'))
+        bold('  » For a list of those who contributed to ' + this.name + ', run:\n   `' + this.name + ' credits`.'))
     }
     if (this.prerequisitesFile) {
       console.log(
-        bold(' » For any set up/installion prerequisites for ' + this.name + ', run:\n   `' + this.name + ' prerequisites`.'))
+        bold('  » For any set up/installion prerequisites for ' + this.name + ', run:\n   `' + this.name + ' prerequisites`.'))
     }
     console.log()
   }.bind(this))
