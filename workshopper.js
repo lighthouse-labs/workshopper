@@ -404,7 +404,7 @@ function onselect (name) {
     file = txt
 
   printText(this.name, this.appDir, file, path.extname(file), function () {
-    var pathtoguide = this.appDir + '/guide/index.html'
+    var pathtoguide = path.join(this.appDir,'guide', 'index.html')
     // console.log(
     //   bold('\n » To print these instructions again, run: `' + this.name + ' print`.\n'))
     // console.log(
