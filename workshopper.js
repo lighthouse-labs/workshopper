@@ -56,6 +56,13 @@ Workshopper.prototype.init = function () {
   if (argv.h || argv.help || argv._[0] == 'help')
     return this._printHelp()
 
+  if (argv.s || argv.server || argv._[0] == 'server')
+    if (argv._[1]) {
+      return this._runServer(argv._[1])
+    } else {
+      return this._runServer()
+  }
+
   if (argv._[0] == 'credits')
     return this._printCredits()
 
@@ -98,7 +105,7 @@ Workshopper.prototype.verify = function (run) {
     console.error('ERROR: No active problem. Select a challenge from the menu.')
     return process.exit(1)
   }
-  
+
   dir     = this.dirFromName(current)
   setupFn = require(dir + '/setup.js')
 
@@ -260,6 +267,20 @@ Workshopper.prototype._printHelp = function () {
     printText(this.name, this.appDir, this.helpFile)
 }
 
+Workshopper.prototype._runServer = function (lang) {
+  var server = http.createServer(
+    ecstatic({ root: this.appDir + '/guide' })
+  ).listen(0)
+
+  server.on('listening', function () {
+    var addr = this.address()
+    var langLocation = addr.port + (lang ? '/index-' + lang + '.html' : '')
+    console.log('Open this in your browser: %s%s', 'http://localhost:' + langLocation , '\n'
+      + 'Open a new terminal window and run `git-it` again.\n'
+      + 'When you are done with server, press CTRL + C to end it.')
+  })
+}
+
 Workshopper.prototype._printCredits = function () {
   if (this.creditsFile)
     printText(this.name, this.appDir, this.creditsFile)
@@ -315,15 +336,15 @@ function onpass (setup, dir, current) {
           if (i == solutions.length - 1)
             console.log(repeat('-', this.width) + '\n')
         }.bind(this))
-        
+
         this.updateData('completed', function (xs) {
           if (!xs) xs = []
           var ix = xs.indexOf(current)
           return ix >= 0 ? xs : xs.concat(current)
         })
-        
+
         completed = this.getData('completed') || []
-        
+
         remaining = this.problems().length - completed.length
         if (remaining === 0) {
           console.log('You\'ve finished all the challenges! Hooray!\n')
@@ -337,7 +358,7 @@ function onpass (setup, dir, current) {
           )
           console.log('Type `' + this.name + '` to show the menu.\n')
         }
-        
+
         if (setup.close)
           setup.close()
       }.bind(this)
@@ -346,7 +367,7 @@ function onpass (setup, dir, current) {
 
 function onfail (setup, dir, current) {
   if (setup.close) setup.close()
-  
+
   console.log(bold(red('# FAIL')))
   if (typeof setup.verify == 'function')
     console.log('\nYour solution to ' + current + ' didn\'t pass. Try again!')
@@ -358,7 +379,7 @@ function onselect (name) {
   console.log('\n  ' + repeat('#', 69))
   console.log(center(this.width, '~~  ' + name + '  ~~'))
   console.log('  ' + repeat('#', 69) + '\n')
-  
+
   var dir  = this.dirFromName(name)
     , txt  = path.resolve(dir, 'problem.txt')
     , md   = path.resolve(dir, 'problem.md')
@@ -392,7 +413,7 @@ function onselect (name) {
     if (this.prerequisitesFile) {
       console.log(
         bold(' » For any set up/installion prerequisites for ' + this.name + ', run:\n   `' + this.name + ' prerequisites`.'))
-    }        
+    }
     console.log()
   }.bind(this))
 }
