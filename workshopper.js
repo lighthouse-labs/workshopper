@@ -58,8 +58,12 @@ Workshopper.prototype.init = function () {
   if (argv.h || argv.help || argv._[0] == 'help')
     return this._printHelp()
 
-if (argv.s || argv.sever || argv._[0] == 'server')
+if (argv.s || argv.server || argv._[0] == 'server')
+  if (argv._[1]) {
+    return this._runServer(argv._[1])
+  } else {
     return this._runServer()
+  }
 
   if (argv._[0] == 'credits')
     return this._printCredits()
@@ -268,16 +272,15 @@ Workshopper.prototype._printHelp = function () {
     printText(this.name, this.appDir, this.helpFile)
 }
 
-Workshopper.prototype._runServer = function () {
-  var dirname = __dirname.split('git-it/')
-  var root = dirname[0] + 'git-it/guide'
+Workshopper.prototype._runServer = function (lang) {
   var server = http.createServer(
-    ecstatic({ root: root })
+    ecstatic({ root: this.appDir + '/guide' })
   ).listen(0)
 
   server.on('listening', function () {
     var addr = this.address()
-    console.log('Open this in your browser: %s:%s', 'http://localhost', addr.port + '\n'
+    var langLocation = addr.port + (lang ? '/index-' + lang + '.html' : '')
+    console.log('Open this in your browser: %s%s', 'http://localhost:' + langLocation , '\n'
       + 'Open a new terminal window and run `git-it` again.\n'
       + 'When you are done with server, press CTRL + C to end it.')
   })
