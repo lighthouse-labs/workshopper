@@ -9,7 +9,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/jlord/workshopper.git#verify"
+    "url": "https://github.com/lighthouse-labs/workshopper.git#verify"
   },
   "license": "MIT",
   "dependencies": {
