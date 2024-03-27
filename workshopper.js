@@ -414,12 +414,12 @@ function onselect (name) {
     // console.log(
     //   bold(green('  » Run `git-it` again to launch menu & go onto next challenge\n')))
     console.log(bold(green('  GUIDE\n')))
-    console.log(green('  » Open the guide in your browser: jlord.github.io/git-it\n' + '  » Traditional Chinese guide: jlord.github.io/git-it/index-zhtw.html\n'))
+    console.log(green('  » Refer to Compass for the instructions / guide\n'))
     // console.log(
     //   bold('  » To launch the guide, run: `' + this.name + ' server`.\n'))
-    console.log(
-      '  » To view guide offline, copy this address to your browser:\n' + '  » ' + pathtoguide + '.html \n'
-      + '  » ' + pathtoguide + '-zhtw.html\n')
+    // console.log(
+    //   '  » To view guide offline, copy this address to your browser:\n' + '  » ' + pathtoguide + '.html \n'
+    //   + '  » ' + pathtoguide + '-zhtw.html\n')
     // if (this.helpFile) {
     //   console.log(bold("  HELP\n"))
     //   console.log(
